@@ -1,0 +1,125 @@
+{
+  "projectType": "general",
+  "projectName": "System Prompts Leaks",
+  "projectDescription": "A comprehensive collection of system prompts extracted from popular AI chatbots including Claude, ChatGPT, Gemini, and Grok",
+  "theme": "sequoia",
+  "primaryColor": "#6366f1",
+  "lightColor": "#818cf8",
+  "darkColor": "#4f46e5",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "what-are-system-prompts",
+              "how-to-use"
+            ]
+          },
+          {
+            "group": "Anthropic",
+            "pages": [
+              "anthropic/claude-opus-4-6",
+              "anthropic/claude-sonnet-4-6",
+              "anthropic/claude-code",
+              "anthropic/claude-desktop",
+              "anthropic/claude-for-excel",
+              "anthropic/claude-in-chrome",
+              "anthropic/claude-cowork",
+              "anthropic/injections",
+              "anthropic/archived"
+            ]
+          },
+          {
+            "group": "OpenAI",
+            "pages": [
+              "openai/gpt-5-3",
+              "openai/gpt-5-2",
+              "openai/gpt-5-1",
+              "openai/gpt-5",
+              "openai/gpt-4-5",
+              "openai/o3",
+              "openai/o4-mini",
+              "openai/chatgpt-tools",
+              "openai/api-models",
+              "openai/personalities"
+            ]
+          },
+          {
+            "group": "Google",
+            "pages": [
+              "google/gemini-3-pro",
+              "google/gemini-3-flash",
+              "google/gemini-2-5-pro",
+              "google/gemini-2-5-flash",
+              "google/gemini-workspace",
+              "google/gemini-in-chrome",
+              "google/notebooklm"
+            ]
+          },
+          {
+            "group": "xAI",
+            "pages": [
+              "xai/grok-4-2",
+              "xai/grok-4-1",
+              "xai/grok-4",
+              "xai/grok-3",
+              "xai/grok-api",
+              "xai/grok-personas"
+            ]
+          },
+          {
+            "group": "Other Platforms",
+            "pages": [
+              "other/perplexity",
+              "other/le-chat",
+              "other/notion-ai",
+              "other/warp",
+              "other/copilot",
+              "other/misc"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Resources",
+        "groups": [
+          {
+            "group": "Learn More",
+            "pages": [
+              "resources/prompt-engineering",
+              "resources/prompt-injection",
+              "resources/contributing",
+              "resources/faq"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "System prompts from Claude (Anthropic)",
+    "System prompts from ChatGPT and GPT models (OpenAI)",
+    "System prompts from Gemini (Google)",
+    "System prompts from Grok (xAI)",
+    "System prompts from other AI platforms (Perplexity, Notion AI, etc.)",
+    "Historical/archived versions of system prompts",
+    "Tool-specific prompts (Canvas, Memory, Search, etc.)",
+    "API vs. web interface variations"
+  ],
+  "publicApiSurface": [
+    "Claude Opus 4.6 system prompt",
+    "Claude Sonnet 4.6 system prompt",
+    "GPT-5.3 Instant system prompt",
+    "GPT-5 thinking mode system prompt",
+    "Gemini 3 Pro system prompt",
+    "Grok 4.2 system prompt",
+    "ChatGPT tool prompts (Canvas, Memory, Deep Research, etc.)",
+    "Claude tool prompts (Computer Use, Skills, Artifacts)",
+    "API-specific system prompts",
+    "Personality variations (GPT-5.1 personalities, Grok personas)"
+  ]
+}
