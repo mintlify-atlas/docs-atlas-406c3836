@@ -1,122 +1,115 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "System Prompts Leaks",
+  "theme": "sequoia",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#6366f1",
+    "light": "#818cf8",
+    "dark": "#4f46e5"
   },
-  "favicon": "/favicon.svg",
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/asgeirtj/system_prompts_leaks"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/asgeirtj/system_prompts_leaks"
+    }
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Get Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "introduction",
+              "what-are-system-prompts",
+              "how-to-use"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Anthropic",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "anthropic/claude-opus-4-6",
+              "anthropic/claude-sonnet-4-6",
+              "anthropic/claude-code",
+              "anthropic/claude-desktop",
+              "anthropic/claude-for-excel",
+              "anthropic/claude-in-chrome",
+              "anthropic/claude-cowork",
+              "anthropic/injections",
+              "anthropic/archived"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "OpenAI",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "openai/gpt-5-3",
+              "openai/gpt-5-2",
+              "openai/gpt-5-1",
+              "openai/gpt-5",
+              "openai/gpt-4-5",
+              "openai/o3",
+              "openai/o4-mini",
+              "openai/chatgpt-tools",
+              "openai/api-models",
+              "openai/personalities"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Google",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "google/gemini-3-pro",
+              "google/gemini-3-flash",
+              "google/gemini-2-5-pro",
+              "google/gemini-2-5-flash",
+              "google/gemini-workspace",
+              "google/gemini-in-chrome",
+              "google/notebooklm"
+            ]
+          },
+          {
+            "group": "xAI",
+            "pages": [
+              "xai/grok-4-2",
+              "xai/grok-4-1",
+              "xai/grok-4",
+              "xai/grok-3",
+              "xai/grok-api",
+              "xai/grok-personas"
+            ]
+          },
+          {
+            "group": "Other Platforms",
+            "pages": [
+              "other/perplexity",
+              "other/le-chat",
+              "other/notion-ai",
+              "other/warp",
+              "other/copilot",
+              "other/misc"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Resources",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Learn More",
             "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "resources/prompt-engineering",
+              "resources/prompt-injection",
+              "resources/contributing",
+              "resources/faq"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    ]
   }
 }

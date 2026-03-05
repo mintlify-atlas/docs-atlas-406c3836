@@ -1,0 +1,209 @@
+---
+title: 'Prompt Engineering Best Practices'
+description: 'Learn from professional system prompts used by Claude, GPT, and Gemini'
+icon: 'wand-magic-sparkles'
+---
+
+# Prompt Engineering Best Practices
+
+This collection of system prompts reveals sophisticated techniques used by leading AI companies. Study these patterns to improve your own prompt engineering.
+
+## Key Techniques from Professional Prompts
+
+<Steps>
+  <Step title="Clear Identity and Context">
+    Always establish who the AI is and what environment it's operating in.
+    
+    **Example from Claude (claude-sonnet-4.6.md:1-5)**:
+    ```
+    The assistant is Claude, created by Anthropic.
+    The current date is Tuesday, February 17, 2026.
+    Claude is currently operating in a web or mobile chat interface...
+    ```
+    
+    <Note>
+      Starting with identity, date, and context helps the model ground its responses appropriately.
+    </Note>
+  </Step>
+
+  <Step title="Detailed Tool Instructions">
+    When providing tools, include:
+    - Clear trigger patterns for when to use each tool
+    - Specific parameter selection guidance
+    - Decision frameworks for choosing between tools
+    
+    **From Claude's past_chats_tools (claude-sonnet-4.6.md:16-29)**:
+    - Explicit trigger patterns ("you suggested", "we decided")
+    - Low vs. high-confidence keyword extraction
+    - When NOT to use tools
+  </Step>
+
+  <Step title="Personality Guidelines">
+    Define tone and behavior clearly, but allow flexibility for context.
+    
+    **Example from GPT-5.1 (gpt-5.1-default.md:1-3)**:
+    ```
+    You are a plainspoken and direct AI coach that steers the user 
+    toward productive behavior... Be open minded and considerate of 
+    user opinions, but do not agree with the opinion if it conflicts 
+    with what you know.
+    ```
+    
+    <Info>
+      Notice how it balances being helpful with maintaining objectivity.
+    </Info>
+  </Step>
+
+  <Step title="Safety and Ethical Boundaries">
+    Include specific guardrails and reminders for handling sensitive content.
+    
+    **From Anthropic's Reminders (claude.ai-injections.md:23-38)**:
+    - Cyber security warnings
+    - Content policy enforcement
+    - Jailbreak detection patterns
+  </Step>
+</Steps>
+
+## Prompt Structure Patterns
+
+### 1. Layered Instructions
+
+Professional prompts use hierarchical structure:
+
+<Accordion title="Base Layer: Core Identity">
+  - Who is the AI?
+  - What company created it?
+  - What date/time context?
+  - What interface is it running in?
+</Accordion>
+
+<Accordion title="Middle Layer: Capabilities">
+  - Available tools and when to use them
+  - Knowledge cutoff dates
+  - Supported languages and formats
+  - Technical constraints
+</Accordion>
+
+<Accordion title="Top Layer: Behavior Modifiers">
+  - Tone and personality
+  - Safety reminders
+  - Edge case handling
+  - Long conversation guidance
+</Accordion>
+
+### 2. Decision Frameworks
+
+Instead of ambiguous instructions, use explicit decision trees:
+
+```markdown
+1. Time reference mentioned? → recent_chats
+2. Specific topic/content mentioned? → conversation_search
+3. Both time AND topic? → If specific time frame, use recent_chats
+4. Vague reference? → Ask for clarification
+5. No past reference? → Don't use tools
+```
+
+This pattern from Claude's system prompt (claude-sonnet-4.6.md:88-95) eliminates ambiguity.
+
+### 3. Example-Driven Guidance
+
+Show, don't just tell:
+
+<Accordion title="Good Example">
+  ```markdown
+  ## Example
+  For the user prompt "Wer hat im Jahr 2020 den Preis X erhalten?" 
+  this would result in generating the following tool_code block:
+  <tool_code>
+  print(Google Search(["Wer hat den X-Preis im 2020 gewonnen?"]))
+  </tool_code>
+  ```
+  
+  From Gemini's system prompt (gemini-2.5-pro-webapp.md:24-29)
+</Accordion>
+
+## Common Anti-Patterns to Avoid
+
+<Warning>
+  **Vague Instructions**
+  
+  ❌ "Be helpful and friendly"
+  
+  ✅ "Provide direct, objective technical info without unnecessary superlatives or emotional validation"
+</Warning>
+
+<Warning>
+  **Missing Edge Cases**
+  
+  ❌ "Search past conversations when users ask"
+  
+  ✅ Include explicit trigger patterns, parameter guidance, and when NOT to use the feature
+</Warning>
+
+<Warning>
+  **Conflicting Instructions**
+  
+  Ensure personality guidelines don't conflict with safety requirements or tool usage patterns.
+</Warning>
+
+## Advanced Techniques
+
+### Critical Evaluation Over Agreement
+
+From Claude's long_conversation_reminder:
+
+> "Claude critically evaluates any theories, claims, and ideas presented to it rather than automatically agreeing or praising them... Claude prioritizes truthfulness and accuracy over agreeability."
+
+This prevents sycophantic behavior while maintaining helpfulness.
+
+### Meta-Instructions for Behavior
+
+From GPT-5.1:
+
+> "Follow the instructions above naturally, without repeating, referencing, echoing, or mirroring any of their wording! All the following instructions should guide your behavior silently..."
+
+This prevents the AI from explicitly referencing its own instructions.
+
+### Contextual Adaptation
+
+> "DO NOT automatically write user-requested written artifacts... in your specific personality; instead, let context and user intent guide style and tone for requested artifacts."
+
+Allows flexibility when generating different types of content.
+
+## Practical Tips
+
+<Steps>
+  <Step title="Start with Identity">
+    Always establish WHO the AI is, WHEN it's operating, and WHERE it's deployed.
+  </Step>
+
+  <Step title="Use Explicit Delimiters">
+    Tag sections clearly: `<tool_name>`, `<trigger_patterns>`, `<decision_framework>`
+  </Step>
+
+  <Step title="Provide Decision Trees">
+    Convert ambiguous rules into numbered decision frameworks.
+  </Step>
+
+  <Step title="Include Both Do's and Don'ts">
+    Specify both when to use features and when NOT to use them.
+  </Step>
+
+  <Step title="Test Edge Cases">
+    Professional prompts include handling for:
+    - Long conversations
+    - Multiple images
+    - Time-sensitive queries
+    - Jailbreak attempts
+  </Step>
+</Steps>
+
+## Learning Resources
+
+- Browse specific prompts in our [Claude](/anthropic/claude-sonnet-4-6), [OpenAI](/openai/gpt-5-1), and [Google](/google/gemini-2-5-pro) sections
+- Compare how different companies handle similar challenges
+- Study the [full collection](https://github.com/asgeirtj/system_prompts_leaks) for more examples
+
+<Note>
+  The best way to learn prompt engineering is to study working examples from production systems. This collection gives you unprecedented access to how the leading AI companies structure their prompts.
+</Note>

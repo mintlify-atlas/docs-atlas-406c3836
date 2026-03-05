@@ -1,0 +1,336 @@
+---
+title: 'Contributing to the Collection'
+description: 'How to add new system prompts and improve the documentation'
+icon: 'code-pull-request'
+---
+
+# Contributing to the Collection
+
+This collection thrives on community contributions. Whether you've extracted a new system prompt, found an updated version, or want to improve documentation, we welcome your input.
+
+<Note>
+  **Repository**: [github.com/asgeirtj/system_prompts_leaks](https://github.com/asgeirtj/system_prompts_leaks)
+  
+  **Maintainer**: asgeirtj (Discord: asgeirtj)
+</Note>
+
+## What We Accept
+
+<Accordion title="New System Prompts">
+  - Prompts from major AI models (Claude, GPT, Gemini, etc.)
+  - Prompts from AI products (ChatGPT, Claude.ai, Gemini, etc.)
+  - Tool-specific prompts (Canvas, Code Interpreter, etc.)
+  - API vs. web interface variants
+  - Different personality/mode variants
+  - Updated versions of existing prompts
+</Accordion>
+
+<Accordion title="Documentation Improvements">
+  - Typo fixes and clarifications
+  - Better organization of existing prompts
+  - Metadata additions (extraction date, version, etc.)
+  - Comparative analysis between prompts
+</Accordion>
+
+<Accordion title="Tools & Scripts">
+  - Extraction scripts (with ethical usage guidelines)
+  - Analysis tools for comparing prompts
+  - Visualization of prompt structures
+  - Documentation generators
+</Accordion>
+
+## Contribution Guidelines
+
+### Format Requirements
+
+<Steps>
+  <Step title="File Naming">
+    Use descriptive, lowercase names with hyphens:
+    
+    ✅ Good:
+    - `claude-sonnet-4.6.md`
+    - `gpt-5.1-default.md`
+    - `gemini-2.5-pro-webapp.md`
+    - `tool-canvas-canmore.md`
+    
+    ❌ Avoid:
+    - `prompt.txt`
+    - `ClaudeSystemPrompt.md`
+    - `new-file-1.md`
+  </Step>
+
+  <Step title="Directory Structure">
+    Organize by company:
+    
+    ```
+    /Anthropic/
+      claude-sonnet-4.6.md
+      claude-opus-4.6.md
+      /old/
+        claude-3.7-sonnet.md
+      /raw/
+        claude-opus-4.6-no-tools-raw.md
+    
+    /OpenAI/
+      gpt-5.1-default.md
+      gpt-5.1-friendly.md
+      /API/
+        gpt-5.3-chat-api.md
+      /Old/
+        gpt-4.5.md
+    
+    /Google/
+      gemini-2.5-pro-webapp.md
+      gemini-3-pro.md
+    
+    /Misc/
+      [Other AI systems]
+    ```
+    
+    Move outdated versions to `/old/` subdirectories.
+  </Step>
+
+  <Step title="File Format">
+    Use Markdown (.md) format:
+    
+    ```markdown
+    [Optional: Link to live prompt or context]
+    
+    [The actual system prompt content]
+    
+    [Optional: Notes about extraction method, date, or variations]
+    ```
+    
+    <Info>
+      Preserve original formatting, including XML tags, special delimiters, and whitespace that may be significant.
+    </Info>
+  </Step>
+
+  <Step title="Metadata">
+    Add a comment or header with:
+    - Extraction date
+    - Model/product version
+    - Interface (API, web, mobile, etc.)
+    - Any special conditions (free tier, paid, beta, etc.)
+    
+    Example:
+    ```markdown
+    <!-- 
+    Extracted: 2026-02-17
+    Model: Claude Sonnet 4.6
+    Interface: claude.ai web interface
+    Account: Free tier
+    -->
+    ```
+  </Step>
+</Steps>
+
+### Pull Request Process
+
+<Steps>
+  <Step title="Fork the Repository">
+    1. Go to [github.com/asgeirtj/system_prompts_leaks](https://github.com/asgeirtj/system_prompts_leaks)
+    2. Click "Fork" in the top right
+    3. Clone your fork locally:
+    
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/system_prompts_leaks.git
+    cd system_prompts_leaks
+    ```
+  </Step>
+
+  <Step title="Create a Branch">
+    ```bash
+    git checkout -b add-[model-name]-prompt
+    ```
+    
+    Example: `add-claude-opus-4.7-prompt`
+  </Step>
+
+  <Step title="Add Your Files">
+    1. Place files in appropriate directories
+    2. Follow naming conventions
+    3. Include metadata
+    4. Move old versions to `/old/` if applicable
+    
+    ```bash
+    git add Anthropic/claude-opus-4.7.md
+    git commit -m "Add Claude Opus 4.7 system prompt from claude.ai"
+    ```
+  </Step>
+
+  <Step title="Push and Create PR">
+    ```bash
+    git push origin add-[model-name]-prompt
+    ```
+    
+    Then:
+    1. Go to your fork on GitHub
+    2. Click "Compare & pull request"
+    3. Fill out the PR template (see below)
+    4. Submit!
+  </Step>
+</Steps>
+
+### Pull Request Template
+
+```markdown
+## Description
+[Brief description of what you're adding]
+
+## Prompt Details
+- **Model/Product**: [e.g., Claude Sonnet 4.7]
+- **Interface**: [e.g., claude.ai web, API, mobile app]
+- **Extraction Date**: [YYYY-MM-DD]
+- **Extraction Method**: [Brief description, if notable]
+
+## Changes
+- [ ] New system prompt added
+- [ ] Updated existing prompt
+- [ ] Moved old version to /old/
+- [ ] Added metadata
+- [ ] Documentation improvements
+
+## Verification
+- [ ] I have verified this prompt is accurate
+- [ ] I have checked for duplicates
+- [ ] I have followed naming conventions
+- [ ] I have added appropriate metadata
+
+## Additional Notes
+[Any special context, variations, or observations]
+```
+
+## Ethical Guidelines
+
+<Warning>
+  **Responsible Contribution**
+  
+  When contributing extracted prompts, please:
+  - Respect terms of service and legal boundaries
+  - Don't share personal information or API keys
+  - Focus on educational/research value
+  - Consider responsible disclosure for security issues
+</Warning>
+
+### What NOT to Include
+
+❌ Don't contribute:
+- Personal API keys or credentials
+- Prompts from private/enterprise systems without permission
+- Content that violates NDAs or confidentiality agreements
+- Malicious code or exploits (without responsible disclosure first)
+- Personal information about users or conversations
+
+## Review Process
+
+<Steps>
+  <Step title="Initial Review">
+    Maintainers will check:
+    - Format compliance
+    - Naming conventions
+    - Duplicate detection
+    - Metadata completeness
+  </Step>
+
+  <Step title="Verification">
+    For new prompts:
+    - Attempt to verify accuracy
+    - Check extraction date is recent
+    - Confirm it's not a duplicate or minor variant
+  </Step>
+
+  <Step title="Merge or Feedback">
+    You'll receive either:
+    - ✅ Approval and merge (usually within a few days)
+    - 💬 Feedback requesting changes
+    - ❌ Rejection with explanation (rare)
+  </Step>
+</Steps>
+
+## Documentation Contributions
+
+You can also improve this documentation site!
+
+### Types of Documentation Improvements
+
+<CardGroup cols={2}>
+  <Card title="Prompt Analysis" icon="magnifying-glass">
+    Write analysis comparing prompts, highlighting interesting patterns, or explaining specific techniques
+  </Card>
+  
+  <Card title="Tutorials" icon="book">
+    Create guides on prompt engineering, extraction techniques, or using the collection
+  </Card>
+  
+  <Card title="Comparative Studies" icon="scale-balanced">
+    Compare how different companies handle similar challenges
+  </Card>
+  
+  <Card title="Navigation" icon="sitemap">
+    Improve organization, tagging, or searchability
+  </Card>
+</CardGroup>
+
+### Documentation Structure
+
+This site uses [Mintlify](https://mintlify.com) for documentation. Key files:
+
+- `docs/`: MDX documentation pages
+- `docs.json`: Navigation and configuration
+- `/resources/`: This section you're reading now
+
+To contribute documentation:
+
+1. Fork the repository
+2. Edit or create `.mdx` files in `docs/`
+3. Update `docs.json` if adding new pages
+4. Test locally with `mintlify dev`
+5. Submit a pull request
+
+## Recognition
+
+Contributors are recognized in:
+- GitHub commit history
+- Repository README (for significant contributions)
+- Release notes for major updates
+
+<Note>
+  **Star the Repository**
+  
+  If you find this collection useful, please ⭐ star the repository on GitHub!
+  
+  [![Star History Chart](https://api.star-history.com/svg?repos=asgeirtj/system_prompts_leaks&type=Date)](https://github.com/asgeirtj/system_prompts_leaks)
+</Note>
+
+## Getting Help
+
+<Steps>
+  <Step title="Check Existing Issues">
+    Search [GitHub Issues](https://github.com/asgeirtj/system_prompts_leaks/issues) for similar questions or problems.
+  </Step>
+
+  <Step title="Discord">
+    Reach out to the maintainer: **asgeirtj** on Discord
+  </Step>
+
+  <Step title="Create an Issue">
+    For bugs or feature requests, [open a new issue](https://github.com/asgeirtj/system_prompts_leaks/issues/new) on GitHub.
+  </Step>
+</Steps>
+
+## Future Roadmap
+
+We're always looking to improve the collection. Ideas for future development:
+
+- Automated extraction monitoring for prompt updates
+- Better diff tools for comparing prompt versions
+- Interactive prompt explorer with search and filtering
+- Analysis dashboard showing prompt evolution over time
+- API for programmatic access to the collection
+
+Want to work on any of these? Reach out or submit a proposal!
+
+<Info>
+  Thank you for contributing to the collective understanding of AI system prompts. Your contributions help researchers, developers, and users better understand how AI systems work.
+</Info>

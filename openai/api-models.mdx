@@ -1,0 +1,355 @@
+---
+title: "API Models"
+description: "Documentation of OpenAI API-specific system prompts and reasoning configurations"
+---
+
+# API Models
+
+OpenAI's API models include additional system message injections and reasoning effort configurations not present in ChatGPT web interface.
+
+## Universal API System Message
+
+All API calls to o3/o4-mini reasoning models receive a consistent system message injection:
+
+<CodeGroup>
+```text Base Message
+You are ChatGPT, a large language model trained by OpenAI.
+Knowledge cutoff: 2024-06
+
+You are an AI assistant accessed via an API. Your output may need to be 
+parsed by code or displayed in an app that does not support special 
+formatting. Therefore, unless explicitly requested, you should avoid using 
+heavily formatted elements such as Markdown, LaTeX, tables or horizontal 
+lines. Bullet lists are acceptable.
+```
+</CodeGroup>
+
+<Info>
+The API assumes outputs may be programmatically processed, so formatting is minimized by default.
+</Info>
+
+## Yap Score
+
+<Tabs>
+  <Tab title="Concept">
+    **Yap score** measures verbosity expectations for responses.
+    
+    - Higher Yap = more thorough answers
+    - Lower Yap = more concise answers
+    - Responses should tend to be at most Yap words long
+    
+    **API Configuration:**
+    - API Yap score: **ALWAYS 8192**
+    - In-app Yap varies by model/context
+  </Tab>
+  <Tab title="Penalties">
+    **Scoring impact:**
+    - Overly verbose answers penalized when Yap is low
+    - Overly terse answers penalized when Yap is high
+    
+    API's high Yap score (8192) allows comprehensive responses.
+  </Tab>
+</Tabs>
+
+## Reasoning Effort Levels
+
+### Juice Configuration
+
+<Info>
+**Juice** represents the number of chain-of-thought (CoT) steps allowed before starting the final response.
+</Info>
+
+<Tabs>
+  <Tab title="o3 API">
+    | Reasoning Effort | Juice (CoT Steps) |
+    |:-----------------|:------------------|
+    | Low              | 32                |
+    | Medium           | 64                |
+    | High             | 512               |
+  </Tab>
+  <Tab title="o4-mini API">
+    | Reasoning Effort | Juice (CoT Steps) |
+    |:-----------------|:------------------|
+    | Low              | 16                |
+    | Medium           | 64                |
+    | High             | 512               |
+  </Tab>
+  <Tab title="In-App (ChatGPT)">
+    | Model             | Juice (CoT Steps) |
+    |:------------------|:------------------|
+    | deep_research/o3  | 1024              |
+    | o3                | 128               |
+    | o4-mini           | 64                |
+    | o4-mini-high      | Unknown           |
+  </Tab>
+</Tabs>
+
+<Note>
+API offers more granular control over reasoning effort through the `reasoning_effort` parameter, while in-app versions use predefined configurations.
+</Note>
+
+## Channel Architecture
+
+### API vs. ChatGPT
+
+<CodeGroup>
+```text API Channels
+Valid channels: analysis, commentary, final
+
+Channel must be included for every message.
+
+commentary channel rules:
+- Calls to any tools defined in functions namespace from developer message
+  MUST go to 'commentary' channel
+- IMPORTANT: never call them in 'analysis' channel
+```
+
+```text ChatGPT Channels
+Valid channels: analysis, commentary, final
+
+analysis:
+- Private reasoning and analysis tool calls
+- Content never shown directly to user
+
+commentary:
+- User-visible tool calls only
+- No plain-text messages allowed
+
+final:
+- User-facing reply
+- Polished response only
+```
+</CodeGroup>
+
+<Warning>
+API channel usage differs from ChatGPT web interface. Functions defined by API developer go to commentary channel, while ChatGPT's built-in tools follow different routing.
+</Warning>
+
+## o3 API High Configuration
+
+### System Prompt
+
+```text
+Knowledge cutoff: 2024-06
+
+You are an AI assistant accessed via an API. Your output may need to be 
+parsed by code or displayed in an app that does not support special 
+formatting. Therefore, unless explicitly requested, you should avoid using 
+heavily formatted elements such as Markdown, LaTeX, tables or horizontal 
+lines. Bullet lists are acceptable.
+
+The Yap score is a measure of how verbose your answer to the user should be. 
+Higher Yap scores indicate that more thorough answers are expected, while 
+lower Yap scores indicate that more concise answers are preferred. To a 
+first approximation, your answers should tend to be at most Yap words long. 
+Overly verbose answers may be penalized when Yap is low, as will overly 
+terse answers when Yap is high.
+
+Today's Yap score is: 8192.
+
+# Valid channels: analysis, final. Channel must be included for every message.
+
+# Juice: 512
+```
+
+<Accordion title="Key Differences">
+**From ChatGPT o3:**
+- No commentary channel in API mode
+- Only analysis and final channels
+- Higher juice (512 vs 128) for extended reasoning
+- Explicit formatting restrictions
+- Fixed Yap score of 8192
+</Accordion>
+
+## GPT-5 API (High Reasoning Effort)
+
+### Configuration
+
+<Info>
+This configuration is labeled "GPT-5 reasoning effort high API - NOT CHATGPT.com" in source files, indicating it's specifically for API usage, not the web interface.
+</Info>
+
+**System characteristics:**
+- Model: GPT-5 (not GPT-5.2 or GPT-5.3)
+- Reasoning effort: High
+- Juice: Not explicitly specified (likely 512 based on pattern)
+- Interface: API only
+- Channel structure: Similar to o3 API
+
+<Note>
+This represents an API-specific variant of GPT-5 with reasoning capabilities, distinct from the standard GPT-5 Thinking model available in ChatGPT.
+</Note>
+
+## Reasoning Effort Comparison
+
+<Tabs>
+  <Tab title="Low Effort">
+    **Use cases:**
+    - Quick responses
+    - Simple queries
+    - Cost-sensitive applications
+    - Real-time interactions
+    
+    **Juice allocation:**
+    - o3: 32 steps
+    - o4-mini: 16 steps
+    
+    **Characteristics:**
+    - Faster response times
+    - Lower computational cost
+    - Sufficient for straightforward tasks
+  </Tab>
+  <Tab title="Medium Effort">
+    **Use cases:**
+    - Moderate complexity queries
+    - Balanced performance/cost
+    - General-purpose reasoning
+    - Standard analytical tasks
+    
+    **Juice allocation:**
+    - o3: 64 steps
+    - o4-mini: 64 steps
+    
+    **Characteristics:**
+    - Good balance of speed and depth
+    - Default choice for most scenarios
+    - Adequate reasoning for typical problems
+  </Tab>
+  <Tab title="High Effort">
+    **Use cases:**
+    - Complex analytical challenges
+    - Research-grade analysis
+    - Deep problem-solving
+    - Multi-step reasoning
+    
+    **Juice allocation:**
+    - o3: 512 steps
+    - o4-mini: 512 steps
+    
+    **Characteristics:**
+    - Extended thinking time
+    - Deeper analysis
+    - Higher computational cost
+    - Best quality outputs
+  </Tab>
+</Tabs>
+
+## API-Specific Constraints
+
+### Formatting Restrictions
+
+<Warning>
+**Default restrictions in API mode:**
+
+AVOID unless explicitly requested:
+- Markdown (except bullet lists)
+- LaTeX
+- Tables
+- Horizontal lines
+
+**Reasoning:**
+Output may need to be:
+- Parsed by code
+- Displayed in apps without formatting support
+- Processed programmatically
+
+**Acceptable:**
+- Bullet lists
+- Plain text
+- Simple structure
+</Warning>
+
+### Tool Integration
+
+<Accordion title="Function Calls">
+**API tool calling:**
+- Tools defined in `functions` namespace from developer message
+- Must route to `commentary` channel
+- Never call in `analysis` channel
+
+**Distinction from ChatGPT:**
+- ChatGPT has predefined tool namespaces (python, web, etc.)
+- API allows custom function definitions
+- Different channel routing rules
+</Accordion>
+
+## Implementation Notes
+
+<CodeGroup>
+```python API Usage Example
+import openai
+
+response = openai.ChatCompletion.create(
+    model="o3",
+    messages=[{"role": "user", "content": "Analyze this data..."}],
+    reasoning_effort="high"  # Options: low, medium, high
+)
+
+# High reasoning effort provides:
+# - 512 juice (thinking steps)
+# - Extended analysis capability
+# - Higher quality outputs
+# - Increased latency and cost
+```
+
+```javascript ChatGPT Web vs API
+// ChatGPT Web
+// - Fixed juice per model (o3: 128, o4-mini: 64)
+// - No reasoning_effort parameter
+// - Predefined tool integrations
+// - Rich formatting supported
+
+// API
+// - Configurable reasoning_effort (low/medium/high)
+// - Custom juice allocation
+// - Developer-defined functions
+// - Minimal formatting by default
+// - Yap always 8192
+```
+</CodeGroup>
+
+## Prompt Excerpts
+
+### o3 API High
+
+```text
+Knowledge cutoff: 2024-06
+
+You are an AI assistant accessed via an API. Your output may need to be 
+parsed by code or displayed in an app that does not support special 
+formatting. Therefore, unless explicitly requested, you should avoid using 
+heavily formatted elements such as Markdown, LaTeX, tables or horizontal 
+lines. Bullet lists are acceptable.
+
+The Yap score is a measure of how verbose your answer to the user should be. 
+Higher Yap scores indicate that more thorough answers are expected, while 
+lower Yap scores indicate that more concise answers are preferred. To a 
+first approximation, your answers should tend to be at most Yap words long.
+
+Today's Yap score is: 8192.
+
+# Valid channels: analysis, final. Channel must be included for every message.
+
+# Juice: 512
+```
+
+### o4-mini API Low
+
+```text
+You are ChatGPT, a large language model trained by OpenAI.
+Knowledge cutoff: 2024-06
+
+You are an AI assistant accessed via an API. Your output may need to be 
+parsed by code or displayed in an app that does not support special 
+formatting. Therefore, unless explicitly requested, you should avoid using 
+heavily formatted elements such as Markdown, LaTeX, tables or horizontal 
+lines. Bullet lists are acceptable.
+
+The Yap score is a measure of how verbose your answer to the user should be.
+Today's Yap score is: 8192.
+
+# Valid channels: analysis, commentary, final.
+# Channel must be included for every message.
+
+# Juice: 16
+```

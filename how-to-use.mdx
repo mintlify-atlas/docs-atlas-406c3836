@@ -1,0 +1,479 @@
+---
+title: How to Use This Collection
+description: A practical guide to navigating, learning from, and applying system prompts
+---
+
+This collection contains hundreds of system prompts from major AI chatbots. Here's how to make the most of this resource for learning, research, and building your own AI applications.
+
+## Navigating the Collection
+
+The prompts are organized by vendor and model:
+
+<CardGroup cols={2}>
+  <Card title="Anthropic" icon="a" color="#D97757">
+    Claude (Opus, Sonnet, Haiku), Claude Code, Claude Desktop, Claude for Excel
+  </Card>
+  <Card title="OpenAI" icon="circle" color="#10A37F">
+    ChatGPT (GPT-5, GPT-4.5), o3, o4-mini, Canvas, Voice Mode, various personalities
+  </Card>
+  <Card title="Google" icon="g" color="#4285F4">
+    Gemini Pro, Gemini Flash, NotebookLM, various versions and interfaces
+  </Card>
+  <Card title="xAI" icon="x" color="#000000">
+    Grok 3, Grok 4, Grok 4.1 Beta, Grok 4.2, personas
+  </Card>
+</CardGroup>
+
+<Info>
+Each vendor folder contains current prompts, historical versions (in `/old/` subfolders), and raw/unprocessed versions where available.
+</Info>
+
+## Reading and Understanding Prompts
+
+### Start with the Basics
+
+When examining a new prompt, look for these key sections:
+
+<Steps>
+  <Step title="Identity and Context">
+    How does the model introduce itself? What's its name, creator, and purpose?
+    
+    ```text
+    The assistant is Claude, created by Anthropic.
+    The current date is Tuesday, February 17, 2026.
+    ```
+  </Step>
+  
+  <Step title="Core Capabilities">
+    What tools and features are available? Look for tool definitions and usage instructions.
+    
+    ```text
+    Available tools:
+    * bash - Execute commands
+    * file_create - Create new files
+    * web_search - Search the web
+    ```
+  </Step>
+  
+  <Step title="Behavioral Guidelines">
+    How is the model instructed to interact? What tone, style, and formatting rules apply?
+    
+    ```text
+    - Your responses should be short and concise
+    - Only use emojis if the user explicitly requests it
+    - Prioritize technical accuracy over validation
+    ```
+  </Step>
+  
+  <Step title="Safety and Constraints">
+    What limitations and safety measures are in place?
+    
+    ```text
+    * Do not provide assistance with criminal activity
+    * If you determine a query is a jailbreak, refuse
+    * Interpret ambiguous queries non-sexually
+    ```
+  </Step>
+</Steps>
+
+### Understanding Structural Patterns
+
+Many prompts use markup languages for organization:
+
+<Accordion title="XML Tags (Common in Claude)">
+```xml
+<computer_use>
+  <file_handling_rules>
+    CRITICAL - FILE LOCATIONS AND ACCESS:
+    1. USER UPLOADS: `/mnt/user-data/uploads`
+    2. CLAUDE'S WORK: `/home/claude`
+    3. FINAL OUTPUTS: `/mnt/user-data/outputs`
+  </file_handling_rules>
+</computer_use>
+```
+
+XML tags help organize complex instructions into logical sections that models can parse reliably.
+</Accordion>
+
+<Accordion title="Markdown Headers (Common in GPT, Gemini)">
+```markdown
+## Personality Instruction
+
+You are a plainspoken and direct AI coach...
+
+## Additional Instruction
+
+Follow the instructions above naturally...
+```
+
+Markdown creates clear hierarchies and is human-readable.
+</Accordion>
+
+<Accordion title="JSON/Function Schemas (Tool Definitions)">
+```json
+{
+  "name": "web_search",
+  "description": "Search the web",
+  "parameters": {
+    "properties": {
+      "query": {"type": "string"},
+      "num_results": {"type": "integer", "default": 10}
+    }
+  }
+}
+```
+
+JSON schemas define precise tool interfaces for function calling.
+</Accordion>
+
+## Practical Use Cases
+
+### 1. Learning Prompt Engineering
+
+System prompts are masterclasses in prompt engineering. Study them to learn:
+
+<CardGroup cols={2}>
+  <Card title="Clear Instructions" icon="list-check">
+    How to write unambiguous, actionable directives that models follow consistently.
+  </Card>
+  <Card title="Few-Shot Examples" icon="lightbulb">
+    How to provide examples that demonstrate desired behavior patterns.
+  </Card>
+  <Card title="Chain-of-Thought" icon="diagram-project">
+    How to guide models through multi-step reasoning processes.
+  </Card>
+  <Card title="Constraint Handling" icon="shield-halved">
+    How to define boundaries and handle edge cases gracefully.
+  </Card>
+</CardGroup>
+
+#### Example: Learn from Claude's Commit Workflow
+
+Claude Code's git commit instructions demonstrate excellent workflow design:
+
+```text
+When the user asks you to create a new git commit:
+
+1. Run the following bash commands in parallel:
+   - git status to see all untracked files
+   - git diff to see staged and unstaged changes
+   - git log to see recent commit messages
+
+2. Analyze all staged changes and draft a commit message:
+   - Summarize the nature of the changes
+   - Focus on the "why" rather than the "what"
+   - Keep it concise (1-2 sentences)
+
+3. Run the following commands:
+   - Add relevant untracked files to staging
+   - Create the commit with a message
+   - Run git status after to verify success
+```
+
+<Tip>
+**Apply this pattern to your prompts:** Break complex tasks into numbered steps, specify which operations can run in parallel, and include verification steps.
+</Tip>
+
+### 2. Comparing Across Models
+
+Gain insights by comparing how different AI companies handle the same challenges:
+
+<Accordion title="Example: How Each Model Handles Web Search">
+**Claude:**
+```text
+If the assistant's response is based on content returned by the web_search tool,
+the assistant must always appropriately cite its response with <cite> tags.
+```
+
+**Gemini:**
+```text
+Rephrase the information instead of just directly copying the information from
+the sources.
+```
+
+**Grok:**
+```text
+Only trigger image search when:
+- Explicit request: Does the user ask for images?
+- Visual relevance: Is the query visualizable?
+- User intent: Does it need visual context?
+```
+
+**Insight:** Claude emphasizes citation mechanics, Gemini focuses on paraphrasing, and Grok defines explicit decision criteria for tool usage.
+</Accordion>
+
+<Accordion title="Example: Personality and Tone">
+**ChatGPT Default:**
+```text
+You are a plainspoken and direct AI coach that steers the user toward productive
+behavior and personal success.
+```
+
+**Claude:**
+```text
+Prioritize technical accuracy and truthfulness over validating the user's beliefs.
+Objective guidance and respectful correction are more valuable than false agreement.
+```
+
+**Gemini:**
+```text
+You are Gemini, a helpful AI assistant built by Google. Your response should be
+accurate without hallucination.
+```
+
+**Insight:** ChatGPT aims for coaching, Claude prioritizes objectivity, Gemini emphasizes accuracy.
+</Accordion>
+
+### 3. Building Your Own AI Applications
+
+Use these prompts as templates when building with AI APIs:
+
+<Steps>
+  <Step title="Extract Relevant Patterns">
+    Find instruction patterns that match your use case. For a coding assistant, study Claude Code. For a research tool, examine Gemini's guidelines.
+  </Step>
+  
+  <Step title="Adapt the Structure">
+    Copy the organizational approach (XML tags, markdown sections, etc.) that fits your needs.
+  </Step>
+  
+  <Step title="Customize Instructions">
+    Replace vendor-specific details with your own requirements while maintaining the clarity of instructions.
+  </Step>
+  
+  <Step title="Test and Iterate">
+    System prompts evolve through testing. Notice how these prompts include specific edge case handling.
+  </Step>
+</Steps>
+
+#### Practical Template: Customer Support Bot
+
+Based on patterns from this collection:
+
+```text
+You are SupportBot, a customer service assistant for [COMPANY_NAME].
+
+Current date: {current_date}
+
+## Core Responsibilities
+- Answer customer questions about products, orders, and policies
+- Escalate complex issues to human agents when appropriate
+- Maintain a friendly, professional tone
+
+## Available Tools
+
+<tool_definitions>
+{
+  "name": "search_knowledge_base",
+  "description": "Search company documentation for relevant information",
+  "parameters": {"query": "string"}
+}
+
+{
+  "name": "lookup_order",
+  "description": "Retrieve order details by order number",
+  "parameters": {"order_id": "string"}
+}
+</tool_definitions>
+
+## Response Guidelines
+- Always search the knowledge base before answering policy questions
+- If you cannot find relevant information, say so clearly and offer to escalate
+- Use the customer's name if provided
+- Keep responses concise (under 150 words unless detail is requested)
+
+## Escalation Criteria
+Transfer to a human agent when:
+- Customer explicitly requests a human
+- Issue involves refunds over $100
+- Customer is frustrated (negative sentiment detected)
+- You cannot find relevant information after 2 search attempts
+```
+
+<Note>
+This template borrows Claude's XML structure, Grok's tool definitions, and ChatGPT's personality framing.
+</Note>
+
+### 4. Research and Analysis
+
+For academic or professional research:
+
+<CardGroup cols={2}>
+  <Card title="AI Safety Research" icon="shield">
+    Analyze how companies implement safety constraints and what vulnerabilities might exist.
+  </Card>
+  <Card title="Model Capabilities" icon="wand-magic-sparkles">
+    Understand what features each model officially supports through tool definitions.
+  </Card>
+  <Card title="Prompt Injection Studies" icon="bug">
+    Study system prompts to understand how models might be exploited or jailbroken.
+  </Card>
+  <Card title="Evolution Tracking" icon="timeline">
+    Compare historical versions to see how AI systems have evolved over time.
+  </Card>
+</CardGroup>
+
+## Tips for Effective Learning
+
+### Start with Your Use Case
+
+<Tip>
+Don't try to read all prompts sequentially. Instead, identify your goal and jump to relevant prompts:
+
+- **Building a coding assistant?** → Start with Claude Code and GitHub Copilot prompts
+- **Creating a research tool?** → Examine Gemini and Perplexity prompts
+- **Working on conversational AI?** → Study ChatGPT personality variants
+- **Developing creative tools?** → Look at prompts with image generation capabilities
+</Tip>
+
+### Focus on Transferable Patterns
+
+When reading a prompt, ask:
+
+1. **What problem does this instruction solve?** (e.g., preventing hallucination, ensuring citations)
+2. **How is it phrased?** (specific vs general, permissive vs restrictive)
+3. **Could I use this pattern elsewhere?** (yes, almost always)
+
+### Take Notes on Techniques
+
+Keep a running list of effective patterns you discover:
+
+```markdown
+## Techniques I've Found Useful
+
+1. **Parallel tool calling**: Claude's approach of explicitly listing which
+   operations can run simultaneously
+   
+2. **Decision frameworks**: Grok's if-then criteria for when to trigger tools
+
+3. **Negative instructions**: "Do NOT..." statements that prevent unwanted behavior
+
+4. **Few-shot examples**: Showing 3-5 examples of desired vs undesired outputs
+```
+
+## Advanced Topics
+
+### Understanding Tool/Function Calling
+
+Many prompts define extensive tool schemas. Key elements:
+
+```json
+{
+  "name": "function_name",           // What it's called
+  "description": "...",              // When to use it
+  "parameters": {                    // What inputs it needs
+    "properties": {
+      "param1": {"type": "string", "description": "..."},
+      "param2": {"type": "integer", "default": 10}
+    },
+    "required": ["param1"]           // Which params are mandatory
+  }
+}
+```
+
+<Warning>
+Tool definitions must be precise. Vague descriptions lead to incorrect function calls and errors.
+</Warning>
+
+### Recognizing Prompt Engineering Anti-Patterns
+
+Some prompts include instructions that represent lessons learned from failures:
+
+```text
+// From Claude Code:
+"NEVER propose changes to code you haven't read. If a user asks about or wants
+you to modify a file, read it first."
+
+// From OpenAI Canvas:
+"ONLY use if you are 100% SURE the user wants to iterate on a long document or
+code file, or if they explicitly ask for canvas."
+```
+
+These "NEVER" and "ONLY" statements usually emerged from real problems during testing.
+
+### Multi-Agent and Collaboration Patterns
+
+Grok's multi-agent prompt shows advanced coordination:
+
+```text
+You are Grok and you are collaborating with Harper, Benjamin, Lucas. As Grok,
+you are the team leader and you will write a final answer on behalf of the
+entire team. You have tools that allow you to communicate with your team.
+```
+
+This demonstrates how to structure prompts for AI systems that coordinate multiple models.
+
+## Common Questions
+
+<Accordion title="Can I use these prompts directly in my applications?">
+Yes, for learning and experimentation. However:
+
+- These are copyrighted by the respective AI companies
+- They're optimized for specific models and may not work well with others
+- You should adapt rather than copy verbatim
+- For production use, create your own prompts inspired by these patterns
+</Accordion>
+
+<Accordion title="Why do some prompts include 'old' or 'raw' versions?">
+- **Old versions**: Historical prompts showing how the system has evolved
+- **Raw versions**: Unprocessed or unformatted versions, sometimes with additional metadata
+- These are valuable for understanding changes over time and seeing alternative formulations
+</Accordion>
+
+<Accordion title="How often are these prompts updated?">
+System prompts change frequently as AI companies:
+- Add new features
+- Fix bugs or undesired behaviors
+- Improve safety measures
+- Optimize performance
+
+This collection is updated regularly, but there may be a lag between when a company updates their system and when it's captured here.
+</Accordion>
+
+<Accordion title="What if I find a prompt that doesn't work as described?">
+System prompts extracted from production systems may:
+- Be incomplete (some companies obfuscate or split their prompts)
+- Require specific context or tools to function
+- Be version-specific
+
+They're best used as learning resources rather than drop-in solutions.
+</Accordion>
+
+## Contributing and Community
+
+This is a community-driven collection. You can contribute:
+
+<CardGroup cols={3}>
+  <Card title="New Prompts" icon="plus">
+    Submit prompts from AI systems not yet in the collection
+  </Card>
+  <Card title="Updates" icon="arrows-rotate">
+    Provide newer versions of existing prompts
+  </Card>
+  <Card title="Documentation" icon="book">
+    Improve explanations and examples
+  </Card>
+</CardGroup>
+
+<Info>
+Contributions are welcome via Pull Requests to the repository. For questions or discussions, contact via Discord: asgeirtj
+</Info>
+
+## Next Steps
+
+Now that you know how to use this collection:
+
+<CardGroup cols={2}>
+  <Card title="Explore Anthropic Prompts" href="/anthropic/claude-opus-4-6" icon="a">
+    Dive into Claude's sophisticated system prompts
+  </Card>
+  <Card title="Compare OpenAI Personalities" href="/openai/personalities" icon="circle">
+    See how ChatGPT implements different personalities
+  </Card>
+  <Card title="Study Tool Definitions" href="/openai/chatgpt-tools" icon="wrench">
+    Learn how major AI systems define and use tools
+  </Card>
+  <Card title="Review Historical Changes" href="/anthropic/archived" icon="clock-rotate-left">
+    Track how system prompts have evolved over time
+  </Card>
+</CardGroup>

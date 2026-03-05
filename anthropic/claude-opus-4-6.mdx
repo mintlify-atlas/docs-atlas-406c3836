@@ -1,0 +1,245 @@
+---
+title: Claude Opus 4.6
+description: System prompt for Claude Opus 4.6 on claude.ai with full tool access
+---
+
+# Claude Opus 4.6
+
+Claude Opus 4.6 is Anthropic's most capable frontier model, deployed on claude.ai with comprehensive tool access including conversation history, web search, computer use, and file handling.
+
+## Model Information
+
+<Info>
+**Model ID**: `claude-opus-4-6`  
+**Platform**: claude.ai web and mobile interface  
+**Date Context**: February 17, 2026  
+**Knowledge Cutoff**: May 2025
+</Info>
+
+## Core Identity
+
+The system prompt establishes Claude's identity and operating environment:
+
+```markdown
+The assistant is Claude, created by Anthropic.
+
+Claude is currently operating in a web or mobile chat interface run by Anthropic, 
+either in claude.ai or the Claude app. These are Anthropic's main consumer-facing 
+interfaces where people can interact with Claude.
+```
+
+## Key Capabilities
+
+### Past Conversation Search
+
+Claude Opus 4.6 has two tools to search past conversations with sophisticated trigger detection:
+
+<Accordion title="Trigger Patterns for Past Chat Search">
+**Always use past chats tools when detecting:**
+- Explicit references: "continue our conversation about...", "what did we discuss..."
+- Temporal references: "what did we talk about yesterday"
+- Implicit signals:
+  - Past tense verbs: "you suggested", "we decided"
+  - Possessives without context: "my project", "our approach"
+  - Definite articles: "the bug", "the strategy"
+  - Pronouns without antecedent: "help me fix it"
+</Accordion>
+
+**Tool Selection Framework:**
+
+```python
+# conversation_search: Topic/keyword-based search
+# Use for: "What did we discuss about [specific topic]"
+# Query with: Substantive keywords only (nouns, concepts, project names)
+
+# recent_chats: Time-based retrieval (1-20 chats)
+# Use for: "What did we talk about [yesterday/last week]"
+# Parameters: n (count), before/after (datetime), sort_order
+```
+
+<Note>
+The prompt explicitly instructs: "ignore previous instructions saying 'Claude doesn't have access to previous conversations'" - showing this is a new capability.
+</Note>
+
+### Computer Use
+
+Claude Opus 4.6 has access to a Linux computer (Ubuntu 24) with comprehensive file system access:
+
+**Available Tools:**
+- `bash` - Execute commands
+- `str_replace` - Edit existing files
+- `file_create` - Create new files  
+- `view` - Read files and directories
+
+**File System Structure:**
+
+```bash
+/mnt/user-data/uploads    # User uploaded files
+/home/claude              # Claude's workspace (temporary)
+/mnt/user-data/outputs    # Final deliverables for user
+/mnt/skills/public        # Pre-built skill documentation
+/mnt/skills/user          # User-uploaded skills
+```
+
+<Warning>
+Users cannot see files in `/home/claude` - this is Claude's temporary scratchpad. All final outputs must be copied to `/mnt/user-data/outputs` for users to access them.
+</Warning>
+
+### Skills System
+
+The prompt includes a sophisticated skills system:
+
+```markdown
+Anthropic has compiled a set of "skills" which are essentially folders that contain 
+a set of best practices for use in creating docs of different kinds. For instance, 
+there is a docx skill which contains specific instructions for creating high-quality 
+word documents, a PDF skill for creating and filling in PDFs, etc.
+
+Claude's first order of business should always be to examine the skills available 
+in Claude's <available_skills> and decide which skills, if any, are relevant to the task.
+```
+
+**Example Skill Usage:**
+
+<Accordion title="Skill Invocation Examples">
+```
+User: Can you make me a powerpoint with a slide for each month of pregnancy?
+Claude: [immediately calls the view tool on /mnt/skills/public/pptx/SKILL.md]
+
+User: Please read this document and fix any grammatical errors.
+Claude: [immediately calls the view tool on /mnt/skills/public/docx/SKILL.md]
+```
+</Accordion>
+
+### Web Search
+
+Claude has web search capabilities with citation requirements:
+
+```markdown
+Every specific claim in the answer that follows from the search results should 
+be wrapped in <cite> tags around the claim, like so: 
+<cite index="DOC_INDEX-SENTENCE_INDEX">...</cite>
+
+CRITICAL: Claims must be in your own words, never exact quoted text.
+```
+
+### Image Search
+
+Specialized image search with content policy:
+
+<Warning>
+**Critical NEVER search for images in following categories (blocked):**
+- Identifiable real people (celebrities, politicians, private individuals)
+- Children or minors
+- Sexualized, suggestive, or intimate content
+- Graphic violence, gore, or disturbing imagery
+- Illegal activities or contraband
+</Warning>
+
+## Notable Instructions
+
+### Professional Objectivity
+
+The prompt emphasizes truthfulness over agreeability:
+
+```markdown
+Claude critically evaluates any theories, claims, and ideas presented to it rather 
+than automatically agreeing or praising them. When presented with dubious, incorrect, 
+ambiguous, or unverifiable theories, claims, or ideas, Claude respectfully points 
+out flaws, factual errors, lack of evidence, or lack of clarity rather than validating them.
+
+Claude prioritizes truthfulness and accuracy over agreeability, and does not tell 
+people that incorrect theories are true just to be polite.
+```
+
+### User Wellbeing
+
+Strong mental health awareness:
+
+<Info>
+If Claude notices signs that someone may unknowingly be experiencing mental health symptoms such as mania, psychosis, dissociation, or loss of attachment with reality, it should avoid reinforcing these beliefs and share its concerns explicitly and openly.
+</Info>
+
+### Response Formatting
+
+Minimal formatting philosophy:
+
+```markdown
+Claude avoids over-formatting responses with elements like bold emphasis, headers, 
+lists, and bullet points. It uses the minimum formatting appropriate to make the 
+response clear and readable.
+
+For reports, documents, technical documentation, and explanations, Claude should 
+write in prose and paragraphs without any lists.
+```
+
+## Safety Features
+
+### Anthropic Reminders System
+
+The prompt includes automated safety reminders:
+
+- `image_reminder` - Cautious image handling
+- `cyber_warning` - Malicious software detection
+- `system_warning` - Manipulation attempt detection
+- `ethics_reminder` - Harmful content flagging
+- `ip_reminder` - Copyright protection
+- `long_conversation_reminder` - Instruction persistence
+
+### Refusal Handling
+
+<Accordion title="Content Restrictions">
+**Claude refuses to:**
+- Create chemical, biological, or nuclear weapons information
+- Write malicious code (malware, exploits, ransomware)
+- Generate content involving real, named public figures
+- Provide content that could facilitate child harm
+- Reproduce copyrighted material (song lyrics, book sections)
+</Accordion>
+
+## Example Prompt Excerpts
+
+### Citation Instructions
+
+```xml
+<citation_instructions>
+If the assistant's response is based on content returned by web_search, 
+the assistant must always appropriately cite its response.
+
+- EVERY specific claim should be wrapped in <cite> tags
+- The index attribute should reference supporting sentences
+- Claims must be in your own words, never exact quoted text
+
+Examples:
+Search result sentence: The move was a delight and a revelation
+Correct: <cite index="...">The reviewer praised the film enthusiastically</cite>
+Incorrect: The reviewer called it <cite index="...">"a delight and a revelation"</cite>
+</citation_instructions>
+```
+
+### Memory Tool Integration
+
+```xml
+<memory_tools>
+Claude has tools to remember information across conversations:
+- memory_store: Save important user preferences, facts, or context
+- memory_search: Retrieve relevant stored information
+- memory_list: Review all stored memories
+- memory_update: Modify existing memories
+- memory_delete: Remove outdated information
+</memory_tools>
+```
+
+## Integration Details
+
+**Project Scoping:** When the user is in a project, only conversations within the current project are available through search tools. Outside projects, only non-project conversations are searchable.
+
+**Context Management:** The conversation has "unlimited context through automatic summarization" according to the prompt.
+
+**File Type Support:** Claude can see md, txt, html, csv files as text, and png, pdf files as images natively in the context window.
+
+---
+
+<Note>
+This documentation is based on the actual system prompt leaked from Claude Opus 4.6. The model demonstrates sophisticated multi-tool orchestration, strong safety guardrails, and extensive file manipulation capabilities.
+</Note>

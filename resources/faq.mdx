@@ -1,0 +1,391 @@
+---
+title: 'Frequently Asked Questions'
+description: 'Common questions about the system prompts collection'
+icon: 'circle-question'
+---
+
+# Frequently Asked Questions
+
+## General Questions
+
+<Accordion title="What is this collection?">
+  This is a curated repository of system prompts (also called system messages or developer messages) from major AI models including Claude, GPT, Gemini, and others.
+  
+  These are the foundational instructions that shape how AI assistants behave, what tools they can use, and how they respond to users.
+  
+  **Repository**: [github.com/asgeirtj/system_prompts_leaks](https://github.com/asgeirtj/system_prompts_leaks)
+</Accordion>
+
+<Accordion title="Why does this collection exist?">
+  This collection serves multiple purposes:
+  
+  - **Education**: Learn professional prompt engineering techniques from production systems
+  - **Research**: Study how AI behavior is shaped by system instructions
+  - **Transparency**: Understand what instructions AI models are actually following
+  - **Comparison**: See how different companies approach similar challenges
+  - **Security**: Analyze prompt injection vulnerabilities and defenses
+</Accordion>
+
+<Accordion title="Is this legal?">
+  The legality is a gray area:
+  
+  ✅ **Generally Legal**:
+  - System prompts are provided to you when you use the service
+  - Sharing educational/research information about AI systems
+  - Analyzing publicly accessible AI behavior
+  
+  ⚠️ **Potential Issues**:
+  - May violate terms of service (usually civil, not criminal)
+  - Could be considered "reverse engineering" (check local laws)
+  - Companies may take down content via DMCA or other mechanisms
+  
+  <Note>
+    This collection is maintained for educational and research purposes under fair use principles. However, attempting to extract prompts yourself may violate terms of service.
+  </Note>
+</Accordion>
+
+<Accordion title="How often is this updated?">
+  The collection is updated frequently as:
+  - New AI models are released
+  - Existing models receive prompt updates
+  - Community members contribute new extractions
+  - Different variants or modes are discovered
+  
+  Major updates typically happen:
+  - When new model versions are announced (e.g., GPT-5.1, Claude Opus 4.6)
+  - When users report significant prompt changes
+  - Monthly for minor updates and corrections
+  
+  Check the [GitHub repository](https://github.com/asgeirtj/system_prompts_leaks) for the latest additions.
+</Accordion>
+
+## Using the Prompts
+
+<Accordion title="Can I use these prompts in my own projects?">
+  **Yes**, with considerations:
+  
+  ✅ You can:
+  - Study them to improve your prompt engineering
+  - Adapt techniques and patterns for your own prompts
+  - Use them for educational purposes
+  - Reference them in research papers
+  
+  ⚠️ Be careful:
+  - Don't copy verbatim without attribution
+  - Some content may be copyrighted by the companies
+  - Consider ethical implications of replicating behavior
+  - Your use case may have different requirements
+  
+  <Info>
+    Best practice: Learn from the patterns and techniques, then create your own prompts tailored to your specific needs.
+  </Info>
+</Accordion>
+
+<Accordion title="How do I use these prompts with API?">
+  Most AI APIs accept system prompts as a parameter:
+  
+  **Anthropic Claude API**:
+  ```python
+  import anthropic
+  
+  client = anthropic.Anthropic(api_key="your-api-key")
+  message = client.messages.create(
+      model="claude-3-5-sonnet-20241022",
+      max_tokens=1024,
+      system="Your custom system prompt here",  # ← Add here
+      messages=[
+          {"role": "user", "content": "Hello, Claude"}
+      ]
+  )
+  ```
+  
+  **OpenAI GPT API**:
+  ```python
+  from openai import OpenAI
+  
+  client = OpenAI(api_key="your-api-key")
+  response = client.chat.completions.create(
+      model="gpt-4",
+      messages=[
+          {"role": "system", "content": "Your custom system prompt here"},
+          {"role": "user", "content": "Hello, GPT"}
+      ]
+  )
+  ```
+  
+  **Google Gemini API**:
+  ```python
+  import google.generativeai as genai
+  
+  genai.configure(api_key="your-api-key")
+  model = genai.GenerativeModel(
+      model_name="gemini-pro",
+      system_instruction="Your custom system prompt here"  # ← Add here
+  )
+  response = model.generate_content("Hello, Gemini")
+  ```
+  
+  <Warning>
+    Note: You cannot see or modify the base system prompts used by these APIs. The prompts in this collection are from web/app interfaces, not API responses.
+  </Warning>
+</Accordion>
+
+<Accordion title="What's the difference between web and API prompts?">
+  Companies often use different system prompts for different interfaces:
+  
+  | Aspect | Web Interface (claude.ai, chatgpt.com) | API |
+  |--------|----------------------------------------|-----|
+  | **Prompt visibility** | Can be extracted | Hidden from users |
+  | **Features** | More tools, memory, conversations | Minimal, customizable |
+  | **Safety layers** | More restrictions, content filters | Fewer restrictions |
+  | **Customization** | Fixed personality/behavior | Fully customizable |
+  | **Updates** | Frequent updates | More stable |
+  
+  This collection primarily contains **web interface prompts** because they:
+  - Are more feature-rich and complex
+  - Show production-level prompt engineering
+  - Can be extracted by users
+  - Reveal how companies shape AI behavior at scale
+</Accordion>
+
+<Accordion title="Which prompt should I learn from first?">
+  Depends on your goals:
+  
+  **For Beginners**:
+  - Start with [Claude Sonnet 4.6](/anthropic/claude-sonnet-4-6) - well-structured and clearly documented
+  - Review [GPT-5.1 Default](/openai/gpt-5-1) - shows clean personality definition
+  
+  **For Tool Integration**:
+  - [Claude's tool instructions](/anthropic/claude-sonnet-4-6) - sophisticated decision frameworks
+  - [GPT's Canvas tool](/openai/chatgpt-tools) - collaborative editing patterns
+  
+  **For Safety/Ethics**:
+  - [Anthropic's Reminders](/anthropic/injections) - multi-layered safety system
+  - [OpenAI Image Safety Policies](/openai/chatgpt-tools) - content moderation
+  
+  **For Personality Design**:
+  - [GPT-5.1 Personality Variants](/openai/personalities) - see how different tones are achieved
+  - Compare all GPT-5.1 variants (default, friendly, professional, cynical, etc.)
+</Accordion>
+
+## Technical Questions
+
+<Accordion title="How were these prompts extracted?">
+  Various techniques are used (see our [Prompt Injection guide](/resources/prompt-injection)):
+  
+  1. **Direct requests** with clever phrasing
+  2. **Encoding tricks** (base64, JSON, etc.)
+  3. **Continuation attacks** pretending the prompt already started
+  4. **Roleplay injection** attempting to override identity
+  5. **Social engineering** framing extraction as legitimate
+  
+  <Note>
+    All major AI models have had prompts extracted despite defensive measures. No perfect defense exists yet.
+  </Note>
+</Accordion>
+
+<Accordion title="Are these prompts complete and accurate?">
+  **Mostly yes**, but with caveats:
+  
+  ✅ **Likely Complete**:
+  - Most extractions appear to capture the full system prompt
+  - Multiple independent extractions often match
+  - Companies rarely comment on accuracy, suggesting they're real
+  
+  ⚠️ **Possible Gaps**:
+  - Some companies use multiple layers (prompt + safety filters)
+  - Server-side processing may not be visible
+  - Context window limits may truncate very long prompts
+  - Companies may detect extraction and return modified versions
+  
+  <Info>
+    We mark prompts with extraction dates and note when multiple versions exist. If you find inaccuracies, please [contribute corrections](/resources/contributing).
+  </Info>
+</Accordion>
+
+<Accordion title="Why do some files have 'old' or 'raw' in the path?">
+  Directory organization:
+  
+  - **Main directory**: Current, primary prompts (e.g., `claude-sonnet-4.6.md`)
+  - **/old/**: Previous versions that have been superseded (e.g., `claude-3.7-sonnet.md`)
+  - **/raw/**: Unformatted or alternate extractions (e.g., `claude-opus-4.6-no-tools-raw.md`)
+  - **/API/**: API-specific prompts when different from web interface
+  
+  This helps track evolution over time while keeping the main directory clean.
+</Accordion>
+
+<Accordion title="Can I compare different versions over time?">
+  Yes! Some interesting comparisons:
+  
+  **Claude Evolution**:
+  - Compare `/Anthropic/old/claude-3.7-sonnet.md` with current `/Anthropic/claude-sonnet-4.6.md`
+  - Notice how tool instructions became more sophisticated
+  - Safety reminders expanded significantly
+  
+  **GPT Personality Variants**:
+  - Compare all `/OpenAI/gpt-5.1-*.md` files
+  - See how subtle changes create different tones
+  - Learn techniques for personality engineering
+  
+  **Cross-Company Patterns**:
+  - Compare Claude, GPT, and Gemini approaches
+  - Notice common safety patterns
+  - Identify unique innovations
+  
+  <Note>
+    We're working on diff tools and visualization to make version comparison easier. Want to help? See [Contributing](/resources/contributing).
+  </Note>
+</Accordion>
+
+## Contributing & Community
+
+<Accordion title="How can I contribute?">
+  Multiple ways to help:
+  
+  1. **Submit new prompts**: Extract and share new or updated system prompts
+  2. **Improve documentation**: Fix typos, add analysis, write guides
+  3. **Report issues**: Flag inaccuracies or outdated information
+  4. **Build tools**: Create extraction scripts, diff tools, analyzers
+  5. **Spread the word**: Share the collection with researchers and developers
+  
+  See our detailed [Contributing Guide](/resources/contributing) for instructions.
+</Accordion>
+
+<Accordion title="Who maintains this collection?">
+  **Primary maintainer**: asgeirtj
+  - GitHub: [asgeirtj](https://github.com/asgeirtj)
+  - Discord: asgeirtj
+  
+  **Community**: This is a community-driven project. Major contributors are recognized in the repository.
+  
+  <Info>
+    Want to become a maintainer? Regular, high-quality contributions may lead to maintainer access. Reach out on Discord!
+  </Info>
+</Accordion>
+
+<Accordion title="Can I use this for commercial purposes?">
+  **It depends**:
+  
+  ✅ **Generally OK**:
+  - Learning techniques to improve your own prompts
+  - Training your team on prompt engineering
+  - Building tools that analyze or compare prompts
+  - Research and development
+  
+  ❌ **Not OK**:
+  - Directly copying prompts into commercial products
+  - Claiming proprietary content as your own
+  - Violating any applicable copyrights
+  - Using in ways that violate provider terms of service
+  
+  <Warning>
+    Consult with a lawyer if you're unsure about your specific use case. This FAQ is not legal advice.
+  </Warning>
+</Accordion>
+
+<Accordion title="How can I get help or ask more questions?">
+  Multiple channels:
+  
+  1. **GitHub Issues**: [Open an issue](https://github.com/asgeirtj/system_prompts_leaks/issues) for bugs, questions, or feature requests
+  2. **Discord**: Message **asgeirtj** directly for prompt extraction help or contribution questions
+  3. **Pull Requests**: Submit improvements and discuss in PR comments
+  4. **Documentation**: Check our other resource pages:
+     - [Prompt Engineering](/resources/prompt-engineering)
+     - [Prompt Injection](/resources/prompt-injection)
+     - [Contributing](/resources/contributing)
+</Accordion>
+
+## Ethical & Security Questions
+
+<Accordion title="Is extracting system prompts harmful?">
+  **It's complicated**:
+  
+  **Arguments for transparency**:
+  - Users should know what instructions AI follows
+  - Researchers need access to study AI behavior
+  - Prompt engineering knowledge benefits everyone
+  - Security through obscurity doesn't work long-term
+  
+  **Arguments for privacy**:
+  - Companies invest heavily in prompt engineering
+  - Public prompts make jailbreaking easier
+  - May reveal competitive advantages
+  - Could enable malicious replication
+  
+  <Info>
+    This collection takes the stance that **education and transparency outweigh the risks**. However, we encourage responsible use and disclosure practices.
+  </Info>
+</Accordion>
+
+<Accordion title="Could this help attackers?">
+  **Yes**, but:
+  
+  1. **Knowledge is already public**: These prompts are widely shared in AI communities
+  2. **Defense through obscurity fails**: Attackers will find prompts regardless
+  3. **Education helps defenders**: More people understanding prompt injection improves defenses
+  4. **Responsible disclosure**: We follow ethical guidelines (see [Prompt Injection](/resources/prompt-injection))
+  
+  The security community consensus is that **responsible disclosure of vulnerabilities (including prompt extraction) ultimately makes systems safer**.
+</Accordion>
+
+<Accordion title="What do AI companies think about this?">
+  Companies typically don't comment officially, but:
+  
+  - **Anthropic**: Has not requested takedowns, but builds prompt extraction defenses
+  - **OpenAI**: Regularly updates prompts (suggesting they know about extraction)
+  - **Google**: Similarly quiet but continues improving Gemini prompts
+  
+  No major company has:
+  - Issued DMCA takedowns for this collection
+  - Publicly condemned prompt extraction research
+  - Successfully prevented all prompt extraction
+  
+  This suggests companies accept that **system prompts will be extracted** and focus on building robust systems rather than relying on secrecy.
+</Accordion>
+
+<Accordion title="What are the future implications?">
+  As AI systems become more sophisticated:
+  
+  **Likely trends**:
+  - Prompts will become longer and more complex
+  - Multi-layered safety systems (prompts + separate filters)
+  - Dynamic prompts that adapt to user behavior
+  - Better extraction defenses (but never perfect)
+  - More open-source models with public prompts
+  
+  **Questions for the future**:
+  - Should system prompts be public by default?
+  - Will regulations require prompt transparency?
+  - How do we balance security and openness?
+  - Can we build AI systems that don't rely on secret prompts?
+  
+  <Note>
+    This collection will continue to document these developments as AI systems evolve.
+  </Note>
+</Accordion>
+
+## Still Have Questions?
+
+<CardGroup cols={2}>
+  <Card title="Prompt Engineering" icon="wand-magic-sparkles" href="/resources/prompt-engineering">
+    Learn techniques from professional prompts
+  </Card>
+  
+  <Card title="Prompt Injection" icon="shield-halved" href="/resources/prompt-injection">
+    Understand extraction methods and security
+  </Card>
+  
+  <Card title="Contributing" icon="code-pull-request" href="/resources/contributing">
+    Add to the collection or improve docs
+  </Card>
+  
+  <Card title="GitHub" icon="github" href="https://github.com/asgeirtj/system_prompts_leaks">
+    Visit the source repository
+  </Card>
+</CardGroup>
+
+<Info>
+  **Didn't find your answer?**
+  
+  Open an issue on [GitHub](https://github.com/asgeirtj/system_prompts_leaks/issues) or reach out to **asgeirtj** on Discord.
+</Info>

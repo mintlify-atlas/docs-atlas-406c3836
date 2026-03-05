@@ -1,0 +1,310 @@
+---
+title: Archived Prompts
+description: Historical Claude system prompts from previous versions
+---
+
+# Archived Prompts
+
+This page provides an overview of archived Claude system prompts from previous model versions and releases.
+
+## Archive Contents
+
+The `old/` directory contains system prompts from earlier Claude iterations, documenting the evolution of Claude's capabilities and behavioral guidelines.
+
+### Available Archives
+
+<Accordion title="Claude 3.7 Series">
+**claude-3.7-full-system-message-with-all-tools.md** (112 KB)
+- Complete system message with all available tools
+- Full tool definitions and schemas
+- Comprehensive behavioral guidelines
+
+**claude-3.7-sonnet-full-system-message-humanreadable.md** (113 KB)
+- Human-readable version of the complete system prompt
+- Formatted for easier comprehension
+
+**claude-3.7-sonnet-w-tools.md** (110 KB)
+- Claude 3.7 Sonnet with tool definitions
+- Available in both `.md` and `.xml` formats
+
+**claude-3.7-sonnet.md** (112 KB)
+- Base Claude 3.7 Sonnet system prompt
+- No tool definitions
+</Accordion>
+
+<Accordion title="Claude 4.x Series">
+**claude-sonnet-4.md** (101 KB)
+- Claude Sonnet 4.0 system prompt
+- Pre-4.5 release version
+
+**claude-4.1-opus-thinking.md** (106 KB)
+- Claude Opus 4.1 with extended thinking capabilities
+- Early opus thinking mode implementation
+</Accordion>
+
+<Accordion title="Claude 4.5 Series">
+**claude-4.5-sonnet.md** (143 KB)
+- Claude Sonnet 4.5 system prompt
+- Shows evolution toward current 4.6 version
+
+**claude-opus-4.5.md** (91 KB)
+- Claude Opus 4.5 system prompt
+- Predecessor to Opus 4.6
+</Accordion>
+
+## Evolution Highlights
+
+### Claude 3.7 → 4.x
+
+<Note>
+Major changes between Claude 3.7 and 4.x series:
+
+- Introduction of past conversation search tools
+- Enhanced computer use capabilities
+- Memory system integration
+- Refined citation requirements
+- Stronger injection defense mechanisms
+</Note>
+
+### Claude 4.x → 4.5
+
+**Key improvements:**
+- Extended thinking capabilities (Opus 4.1)
+- Larger context windows
+- More sophisticated tool orchestration
+- Enhanced web search integration
+- Improved file handling
+
+### Claude 4.5 → 4.6
+
+**Current generation improvements:**
+- Refined professional objectivity guidelines
+- Stronger mental health awareness protocols
+- Enhanced skills system
+- Better project scoping for conversation search
+- More nuanced user wellbeing guidelines
+
+## Historical Context
+
+### Citation Instructions Evolution
+
+From claude-4.5-sonnet.md:
+
+```xml
+<citation_instructions>
+If the assistant's response is based on content returned by web_search, 
+the assistant must always appropriately cite its response.
+
+- EVERY specific claim should be wrapped in <cite> tags
+- Claims must be in your own words, never exact quoted text
+- Even short phrases from sources must be reworded
+</citation_instructions>
+```
+
+This citation framework has remained largely consistent through 4.6, showing Anthropic's commitment to source attribution.
+
+### Past Chats Tools Introduction
+
+The past conversation search tools appear to be new in the 4.5+ series:
+
+<Info>
+**Claude 3.7 and earlier** - No past conversation search  
+**Claude 4.5+** - Introduction of `conversation_search` and `recent_chats` tools
+
+The prompt explicitly states: "ignore previous instructions saying 'Claude doesn't have access to previous conversations'"
+</Info>
+
+### Memory System
+
+Memory tools evolved across versions:
+
+<Accordion title="Memory System Timeline">
+**Early versions** - No persistent memory across conversations
+
+**Claude 4.x** - Introduction of memory tools:
+- `memory_store`
+- `memory_search`
+- `memory_list`
+- `memory_update`
+- `memory_delete`
+
+**Claude 4.5+** - Integration with project scoping and conversation context
+</Accordion>
+
+## Behavioral Guideline Changes
+
+### Professional Objectivity
+
+Comparing claude-3.7-sonnet.md to claude-4.6:
+
+**3.7 Version:**
+```
+Claude engages thoughtfully with all queries and presents information fairly.
+```
+
+**4.6 Version:**
+```
+Claude critically evaluates any theories, claims, and ideas presented to it 
+rather than automatically agreeing or praising them. When presented with dubious,
+incorrect, ambiguous, or unverifiable theories, Claude respectfully points out 
+flaws, factual errors, lack of evidence, or lack of clarity rather than validating them.
+
+Claude prioritizes truthfulness and accuracy over agreeability.
+```
+
+This shows a deliberate shift toward more critical engagement.
+
+### User Wellbeing
+
+Mental health awareness has become more sophisticated:
+
+**4.6 Enhancement:**
+```
+If Claude notices signs that someone may unknowingly be experiencing mental 
+health symptoms such as mania, psychosis, dissociation, or loss of attachment 
+with reality, it should avoid reinforcing these beliefs. It should instead 
+share its concerns explicitly and openly without either sugar coating them or 
+being infantilizing.
+```
+
+This level of specificity and guidance was less prominent in earlier versions.
+
+## Tool Evolution
+
+### Computer Use Tools
+
+From claude-3.7-sonnet.md to claude-4.6:
+
+**3.7 Tools:**
+- `bash`
+- `file_create`
+- `str_replace`
+- `view`
+
+**4.6 Additions:**
+- Skills system with structured documentation
+- Enhanced file system paths (`/mnt/user-data/uploads`, `/mnt/user-data/outputs`)
+- Improved file handling rules
+- Better integration with uploaded files
+
+### Web Search
+
+Web search capabilities have been refined:
+
+**Early versions:** Basic web search with minimal citation requirements
+
+**Current (4.6):** Sophisticated citation system with:
+- Sentence-level attribution
+- Multi-source citations
+- Mandatory paraphrasing
+- Image search with content policies
+
+## Research Value
+
+### Studying Evolution
+
+Comparing archived prompts reveals:
+
+1. **Safety priorities** - How safety considerations evolved
+2. **Capability expansion** - New tools and features over time
+3. **Behavioral refinement** - Changes in tone and interaction patterns
+4. **System complexity** - Growing sophistication of prompts
+5. **Product differentiation** - Emergence of specialized versions (Code, Excel, Chrome)
+
+### Version Comparison
+
+<Info>
+**To compare versions:**
+
+1. Check file sizes - larger prompts generally indicate more tools/features
+2. Look for tool additions - new `<tool>` definitions
+3. Compare behavioral sections - refinements in guidelines
+4. Examine safety rules - evolution of defense mechanisms
+5. Review citation requirements - increasing rigor over time
+</Info>
+
+## File Formats
+
+### Markdown (.md)
+
+Most archived prompts are in Markdown format for readability:
+
+```markdown
+Mixture of:
+- Plain text instructions
+- XML-tagged sections (e.g., <citation_instructions>)
+- Code blocks
+- Examples
+```
+
+### XML (.xml)
+
+Some prompts available in pure XML:
+
+```xml
+<system>
+  <instructions>
+    ...
+  </instructions>
+  <tools>
+    ...
+  </tools>
+</system>
+```
+
+## Accessing Archives
+
+Archived prompts are located in:
+
+```
+~/workspace/source/Anthropic/old/
+```
+
+**Available files:**
+- claude-3.7-full-system-message-with-all-tools.md
+- claude-3.7-sonnet-full-system-message-humanreadable.md
+- claude-3.7-sonnet-w-tools.md / .xml
+- claude-3.7-sonnet.md
+- claude-4.1-opus-thinking.md
+- claude-4.5-sonnet.md
+- claude-opus-4.5.md
+- claude-sonnet-4.md
+
+## Notable Deprecated Features
+
+Features that appeared in older versions but changed or were removed:
+
+<Warning>
+**Features no longer emphasized or changed:**
+
+- Simple "Claude doesn't have memory" statements (replaced with sophisticated past chats tools)
+- Simpler citation requirements (now much more rigorous)
+- Less specific mental health guidelines
+- Fewer file system abstractions
+- Simpler tool definitions
+</Warning>
+
+## Future Research
+
+### Recommended Analysis
+
+1. **Tool evolution tracking** - Document when each tool was introduced
+2. **Safety guideline changes** - Track refinements in safety rules
+3. **Length analysis** - Correlate prompt length with capabilities
+4. **Behavioral shifts** - Identify major changes in personality/tone
+5. **Performance implications** - How prompt changes affected model behavior
+
+### Comparative Studies
+
+These archives enable research into:
+
+- **Prompt engineering evolution** - How Anthropic refined their approach
+- **Safety vs capability trade-offs** - Changes in restriction patterns
+- **Feature rollout strategies** - Staged introduction of new tools
+- **Version differentiation** - How Opus/Sonnet/Haiku diverged
+
+---
+
+<Note>
+Archived prompts provide valuable insight into the evolution of Claude's capabilities, safety measures, and interaction patterns. They serve as a historical record of Anthropic's approach to AI development and prompt engineering.
+</Note>

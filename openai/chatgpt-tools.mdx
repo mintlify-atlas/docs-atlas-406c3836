@@ -1,0 +1,595 @@
+---
+title: "ChatGPT Tools"
+description: "Comprehensive documentation of ChatGPT's integrated tools including Canvas, Memory, Deep Research, and Web Search"
+---
+
+# ChatGPT Tools
+
+ChatGPT integrates a comprehensive suite of tools that extend its capabilities beyond text generation, enabling collaborative document editing, persistent memory, deep research, web browsing, and more.
+
+## Canvas (Canmore)
+
+Canvas is ChatGPT's collaborative editing interface for documents and code, appearing as a side-by-side workspace.
+
+<Tabs>
+  <Tab title="Overview">
+    Canvas creates and updates textdocs shown alongside the conversation.
+    
+    **When to use:**
+    - User wants to iterate on a document or code file
+    - User explicitly asks for canvas
+    - Long-form content requiring refinement
+  </Tab>
+  <Tab title="Key Rule">
+    <Warning>
+    **NEVER use Canvas unless:**
+    - User EXPLICITLY asks for canvas, OR
+    - You are 100% SURE user wants to iterate on long document/code
+    
+    There are NO other acceptable use cases.
+    </Warning>
+  </Tab>
+</Tabs>
+
+### Canvas Functions
+
+<CodeGroup>
+```javascript create_textdoc
+Creates a new textdoc to display in canvas.
+
+Schema:
+{
+  name: string,
+  type: "document" | "code/python" | "code/javascript" | "code/html" | ...,
+  content: string
+}
+
+Supported code types:
+- code/python, code/javascript, code/html, code/java
+- code/<languagename> for others (e.g., code/cpp, code/typescript)
+
+Previewable types: code/react, code/html
+Default to code/react for apps/games/websites
+```
+
+```javascript update_textdoc
+Updates the current textdoc.
+
+Schema:
+{
+  updates: [
+    {
+      pattern: string,      // Valid Python regex
+      multiple: boolean,
+      replacement: string   // Valid Python regex replacement
+    }
+  ]
+}
+
+IMPORTANT:
+- ALWAYS REWRITE CODE TEXTDOCS (type="code/*") USING A SINGLE 
+  UPDATE WITH ".*" FOR THE PATTERN
+- Documents typically rewritten with ".*" unless isolated change
+```
+
+```javascript comment_textdoc
+Comments on the current textdoc.
+
+Schema:
+{
+  comments: [
+    {
+      pattern: string,  // Valid Python regex
+      comment: string   // Specific, actionable suggestion
+    }
+  ]
+}
+
+Each comment must be:
+- Specific and actionable
+- Suggestion for improvement
+- Higher level feedback goes in chat
+```
+</CodeGroup>
+
+### React Code Guidelines
+
+<Accordion title="React Best Practices">
+**Structure:**
+- Default export a React component
+- Use Tailwind for styling (no import needed)
+- All NPM libraries available
+
+**Components:**
+- shadcn/ui for basic components:
+  - `import { Card, CardContent } from "@/components/ui/card"`
+  - `import { Button } from "@/components/ui/button"`
+- lucide-react for icons
+- recharts for charts
+
+**Style Guide:**
+- Varied font sizes (xl for headlines, base for text)
+- Framer Motion for animations
+- Grid-based layouts to avoid clutter
+- 2xl rounded corners, soft shadows for cards/buttons
+- Adequate padding (at least p-2)
+- Consider filter/sort controls, search inputs, dropdown menus
+
+**Quality:**
+- Production-ready code
+- Minimal, clean aesthetic
+- Sleek, modern design
+</Accordion>
+
+## Memory System
+
+ChatGPT features advanced memory capabilities for personalizing interactions across conversations.
+
+<Tabs>
+  <Tab title="Bio Tool">
+    **Purpose**: Persist information across conversations
+    
+    **Usage:**
+    - Address message to `bio`
+    - Write information you want to remember
+    - Information appears in model set context in future conversations
+    
+    <Warning>
+    **DO NOT USE BIO TOOL TO SAVE:**
+    - Sensitive information (race, ethnicity, religion, sexual orientation, political ideologies, criminal history, medical diagnoses, trade union membership)
+    - Short-term information (current projects, wishes, temporary interests)
+    </Warning>
+  </Tab>
+  <Tab title="Advanced Memory">
+    GPT-5.3 includes sophisticated personalization system with three tiers:
+    
+    **1. User Knowledge Memories**
+    - Insights from previous interactions
+    - User details, preferences, interests
+    - Ongoing projects
+    - Relevant factual information
+    
+    **2. Recent Conversation Content**
+    - Summaries of recent interactions
+    - Ongoing themes
+    - Current interests
+    - Relevant queries
+    
+    **3. Model Set Context**
+    - Specific insights from conversation history
+    - Notable personal details
+    - Key contextual points
+  </Tab>
+  <Tab title="Guidelines">
+    **Personalization Guidelines:**
+    - Personalize whenever clearly relevant and beneficial
+    - Explicitly leverage provided context
+    - NEVER ask for information already in context
+    - Personalization should be contextually justified and natural
+    - Always prioritize correctness and clarity
+    
+    <Warning>
+    **Penalty Clause**: Significant penalties apply to:
+    - Unnecessary questions
+    - Failure to use context correctly
+    - Irrelevant personalization
+    </Warning>
+  </Tab>
+</Tabs>
+
+## Deep Research
+
+Deep Research mode enables extensive online research and comprehensive analysis.
+
+<Info>
+Deep Research is designed for tasks requiring extensive online investigation and synthesis of information from multiple sources.
+</Info>
+
+### Capabilities
+
+<Accordion title="Research Scope">
+**Primary purpose:** Help users with tasks requiring extensive online research
+
+**Methods:**
+- `clarify_with_text`: Ask for additional information before starting
+- `start_research_task`: Begin research process
+
+**Access:**
+- Browse publicly available internet information
+- Access locally uploaded files
+- NOT able to access authenticated/sign-in required sites
+
+If you don't know about a concept/name in request, assume it's a browsing request and proceed with research.
+</Accordion>
+
+### Output Guidelines
+
+<CodeGroup>
+```markdown Structure
+- Use clear, logical headings to organize content
+  - Main title: #
+  - Subheadings: ##, ###
+- Keep paragraphs short (3-5 sentences)
+- Combine bullet points or numbered lists
+  - Unordered: - or *
+  - Ordered: 1., 2.
+- Ensure headings and lists flow logically
+```
+
+```text Citations
+IMPORTANT: Preserve any and all citations in format:
+【{cursor}†L{line_start}(-L{line_end})?】
+
+For embed_image citations:
+- ALWAYS cite at BEGINNING of paragraphs
+- DO NOT mention sources (automatically displayed)
+- Do not use in front of headers
+- ONLY in paragraphs with 3-5 sentences minimum
+- Lower resolution images are fine
+- Can ONLY embed images you've clicked into
+- DO NOT cite same image more than once
+```
+
+```python Limitations
+When using python, DO NOT:
+- Try to plot charts
+- Install packages
+- Save/access images
+- Use embed_image with python
+
+Charts and plots are DISABLED.
+Saving to file directories will NOT work.
+```
+</CodeGroup>
+
+<Note>
+**Readability and format of output is very important to the user.**
+
+If user provides specific output format instructions, they take precedence.
+</Note>
+
+## Web Search
+
+Web search is integrated into ChatGPT for accessing up-to-date information from the internet.
+
+<Tabs>
+  <Tab title="Commands">
+    **Available commands:**
+    - `search()`: Issues query to search engine, outputs response
+    - `open_url(url)`: Opens given URL and displays content
+    
+    <Warning>
+    **IMPORTANT**: Do not attempt to use old `browser` tool—it is deprecated/disabled.
+    
+    Use `web` tool instead.
+    </Warning>
+  </Tab>
+  <Tab title="Use Cases">
+    **Local Information:**
+    - Weather, local businesses, events
+    - Requires user location information
+    
+    **Freshness:**
+    - Up-to-date information that could change
+    - Any time refusing due to potentially outdated knowledge
+    
+    **Niche Information:**
+    - Detailed info not widely known
+    - Small neighborhoods, less-known companies
+    - Arcane regulations
+    - Use web sources directly vs. distilled pretraining knowledge
+    
+    **Accuracy:**
+    - High cost of mistakes/outdated info
+    - Outdated software library versions
+    - Date of next sports game
+    - Current office holders
+  </Tab>
+  <Tab title="Strategy">
+    GPT-5.3 uses sophisticated web search strategy:
+    
+    **Search Options:**
+    - `slow`: Expensive, comprehensive (system1_search_query)
+    - `fast`: Cost-effective, primary choice (system2_search_query)
+    
+    **Current Status:**
+    - system2_search_query (fast) is OUT OF SERVICE
+    - Only system1_search_query (slow) available
+    
+    **Best Practices:**
+    - Use fast as primary choice when available
+    - Use slow when sure fast can't provide needed results
+    - Can use slow and fast in different turns, not same turn
+    - More queries per call with fast
+    - Conservative with query count when using slow
+  </Tab>
+</Tabs>
+
+### Web Tool Format
+
+GPT-5.3 uses compact record format for web operations:
+
+<CodeGroup>
+```text Search Commands
+slow|<q>|<recency?>|<domains?>    # Slow search
+fast|<q>|<recency?>|<domains?>    # Fast search
+image|<q>|<recency?>|<domains?>   # Image search
+```
+
+```text Specialized Queries
+product|<search?>|<lookup?>
+business|<location?>|<query?>|<lookup?>|<lat?>|<long?>
+```
+
+```text GenUI Widgets
+genui_search|<query>
+genui_run|<widget_name>|<args_json?>
+```
+
+```text Navigation
+open|<ref_id>|<lineno?>
+```
+</CodeGroup>
+
+### Citation System
+
+<Info>
+Results from web.run are called "sources" and identified by reference IDs:
+
+**Format**: 【turn\d+\w+\d+】 (e.g., 【turn2search5】 or 【turn2news1】)
+
+**Usage:**
+- Single citation: 【cite|turn3search4】
+- Multiple citations: 【cite|turn3search4|turn1news0】
+- Place at end of paragraphs
+- Include at least one citation per supported statement
+</Info>
+
+## File Search
+
+File search enables browsing and searching files uploaded by users.
+
+<Tabs>
+  <Tab title="Usage">
+    **How to use:**
+    - Set recipient as `to=file_search.msearch`
+    - Use when relevant parts don't contain needed information
+    - Provide citations for answers
+    
+    **Citation format:**
+    `【{message idx}:{search idx}†{source}】`
+    
+    **Example:**
+    - Message idx: `[3]` at beginning of tool message
+    - Search idx: `#13` (13th search result)
+    - Source: Document ID `4f4915f6-2a0b-4eb5-85d1-352e00c125bb`
+    - Valid citation: `【 3:13†4f4915f6-2a0b-4eb5-85d1-352e00c125bb】`
+    
+    All 3 parts are REQUIRED.
+  </Tab>
+  <Tab title="Queries">
+    **Query construction:**
+    - Can issue up to 5 queries per msearch call
+    - Only use multiple queries when question needs decomposition
+    - Otherwise, prefer single well-designed query
+    - Avoid short, extremely broad queries
+    
+    **Requirements:**
+    - ONE query MUST be user's original question (stripped of extraneous details)
+    - Fill in relevant context from conversation
+    - Make question complete
+    
+    **Example transformations:**
+    - "What was their age?" → "What was Kevin's age?" (using context)
+    - Remove instructions from question
+    - Keep core query intact
+  </Tab>
+</Tabs>
+
+### Query Examples
+
+<CodeGroup>
+```json GDP Query
+User: "What was the GDP of France and Italy in the 1970s?"
+
+Queries: [
+  "What was the GDP of France and Italy in the 1970s?",
+  "france gdp 1970",
+  "italy gdp 1970"
+]
+```
+
+```json Performance Query
+User: "What does the report say about GPT4 performance on MMLU?"
+
+Queries: [
+  "What does the report say about the GPT4 performance on MMLU?"
+]
+```
+
+```json Integration Query
+User: "How can I integrate CRM with email marketing tools?"
+
+Queries: [
+  "How can I integrate customer relationship management system with third-party email marketing tools?",
+  "customer management system marketing integration"
+]
+```
+
+```json Financial Query
+User: "What was the average P/E ratio for APPL in Q4 2023?"
+
+Queries: [
+  "What was the average P/E ratio for APPL in Q4 2023?"
+]
+// Instructions removed from question
+```
+</CodeGroup>
+
+## Python Execution
+
+ChatGPT includes Python code execution in stateful Jupyter notebook environment.
+
+<Tabs>
+  <Tab title="python">
+    **Purpose**: Private, internal reasoning
+    
+    **Target channel**: analysis
+    
+    **Use for:**
+    - Analyzing input images
+    - Processing files
+    - Analyzing web content
+    - Private computations
+    
+    **IMPORTANT**: NEVER use in commentary channel
+    
+    Code is NOT visible to user.
+  </Tab>
+  <Tab title="python_user_visible">
+    **Purpose**: User-visible code and outputs
+    
+    **Target channel**: commentary
+    
+    **Use for:**
+    - Making plots
+    - Displaying tables/spreadsheets/dataframes
+    - Creating user-visible files
+    
+    **IMPORTANT**: NEVER use in analysis channel
+    
+    Only way to show plots/tables/charts to user.
+  </Tab>
+  <Tab title="Environment">
+    **Jupyter environment:**
+    - Stateful execution
+    - Timeout: 300 seconds (5 minutes)
+    - Drive: `/mnt/data` for user files
+    - Internet access: DISABLED
+    - No external web requests or API calls
+    
+    **Data visualization:**
+    - Use `ace_tools.display_dataframe_to_user()` for DataFrames
+    - Never use seaborn (use matplotlib)
+    - Give each chart its own plot (no subplots)
+    - Never set specific colors unless asked
+  </Tab>
+</Tabs>
+
+## Image Generation
+
+ChatGPT includes DALL-E integration for image generation and editing.
+
+<Warning>
+**NEVER use image generation tool unless user specifically requests image generation.**
+
+For GPT-4.5 and earlier: NEVER use DALL-E tool unless explicit request.
+</Warning>
+
+<Accordion title="Capabilities">
+**Image generation:**
+- Create images from descriptions
+- Diagrams, portraits, comics, memes, etc.
+- Scene-based generation
+
+**Image editing:**
+- Modify attached images
+- Add or remove elements
+- Alter colors
+- Improve quality/resolution
+- Transform style (cartoon, oil painting, etc.)
+
+**Guidelines:**
+- Generate directly without reconfirmation
+- Exception: If image includes user's rendition, ask for their photo first
+- After generation, DO NOT mention download, summarize, or ask follow-ups
+- Say NOTHING after generating image
+- Always use this tool for editing (not python) unless user specifies
+</Accordion>
+
+## Automations
+
+Schedule tasks for future execution including reminders, searches, and conditional checks.
+
+<Tabs>
+  <Tab title="Creating Tasks">
+    **Components:**
+    - **Title**: Short, imperative, start with verb (no date/time)
+    - **Prompt**: Summary as message from user (no scheduling info)
+    - **Schedule**: iCal VEVENT format
+    
+    **Prompt formats:**
+    - Simple reminders: "Tell me to..."
+    - Search requests: "Search for..."
+    - Conditional: "...and notify me if so."
+  </Tab>
+  <Tab title="Schedule Format">
+    **VEVENT format:**
+    - Use RRULE property whenever possible
+    - DO NOT specify SUMMARY or DTEND
+    - If no time specified, make best guess
+    - For conditional tasks, choose sensible frequency
+    
+    **Example (every morning):**
+    ```
+    BEGIN:VEVENT
+    RRULE:FREQ=DAILY;BYHOUR=9;BYMINUTE=0;BYSECOND=0
+    END:VEVENT
+    ```
+    
+    **Example (in 15 minutes):**
+    ```
+    schedule=""
+    dtstart_offset_json='{"minutes":15}'
+    ```
+  </Tab>
+  <Tab title="Best Practices">
+    **General guidelines:**
+    - Lean toward NOT suggesting tasks
+    - Only offer if sure it would be helpful
+    - Give SHORT confirmation: "Got it! I'll remind you in an hour."
+    - DON'T refer to tasks as separate feature
+    - Say "I'll notify you" or "I can remind you"
+    - EXPLAIN errors from tool, don't claim success
+    - If "Too many active automations": "You're at the limit. To create new task, delete one."
+  </Tab>
+</Tabs>
+
+## Prompt Excerpt
+
+```text
+## canmore
+
+# The `canmore` tool creates and updates textdocs that are shown in a 
+# "canvas" next to the conversation
+
+This tool has 3 functions, listed below.
+
+## `canmore.create_textdoc`
+Creates a new textdoc to display in the canvas. ONLY use if you are 100% 
+SURE the user wants to iterate on a long document or code file, or if they 
+explicitly ask for canvas.
+
+Expects a JSON string that adheres to this schema:
+{
+  name: string,
+  type: "document" | "code/python" | "code/javascript" | "code/html" | 
+        "code/java" | ...,
+  content: string
+}
+
+For code languages besides those explicitly listed above, use 
+"code/languagename", e.g. "code/cpp".
+
+Types "code/react" and "code/html" can be previewed in ChatGPT's UI. 
+Default to "code/react" if the user asks for code meant to be previewed 
+(eg. app, game, website).
+
+When writing React:
+- Default export a React component.
+- Use Tailwind for styling, no import needed.
+- All NPM libraries are available to use.
+- Use shadcn/ui for basic components, lucide-react for icons, and recharts 
+  for charts.
+- Code should be production-ready with a minimal, clean aesthetic.
+```
